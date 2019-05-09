@@ -9,7 +9,7 @@ from pymysql.err import OperationalError
 # TODO(developer): specify SQL connection details
 CONNECTION_NAME = getenv(
   'INSTANCE_CONNECTION_NAME',
-  'la-containers-001:us-central1:la-met-1')
+  '[YOUR_INSTANCE_CONNECTION_NAME]')
 DB_USER = getenv('MYSQL_USER', 'root')
 DB_PASSWORD = getenv('MYSQL_PASSWORD', 'root')
 DB_NAME = getenv('MYSQL_DATABASE', 'la_met_museum')
