@@ -33,16 +33,7 @@ RESULT_TOPIC = "[YOUR-RESULTS-TOPIC]"
 TRANSLATE_TOPIC = "[YOUR-TRANSLATION-TOPIC"
 RESULT_BUCKET = "[YOUR-RESULTS-BUCKET]"
 TRANSLATE = True
-TO_LANG = ["en", "fr", "es", "ja", "ru"]
-
-
-
-'''
-with open('config.json') as f:
-    data = f.read()
-config = json.loads(data)
-# [END functions_ocr_setup]
-'''
+TO_LANG = ["en", "fr", "es", "de", "ru"]
 
 # [START functions_ocr_detect]
 def detect_text(bucket, filename):
