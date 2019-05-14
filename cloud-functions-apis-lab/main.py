@@ -121,7 +121,7 @@ def translate_text(event, context):
     translated_text = translate_client.translate(text,
                                                  target_language=target_lang,
                                                  source_language=src_lang)
-    topic_name = config['RESULT_TOPIC']
+    topic_name = RESULT_TOPIC
     message = {
         'text': translated_text['translatedText'],
         'filename': filename,
