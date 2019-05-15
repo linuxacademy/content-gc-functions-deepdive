@@ -29,8 +29,8 @@ storage_client = storage.Client()
 project_id = os.environ['GCP_PROJECT']
 
 # SET VARIABLES
-RESULT_TOPIC = "[YOUR-RESULTS-TOPIC]"
-TRANSLATE_TOPIC = "[YOUR-TRANSLATION-TOPIC]"
+RESULT_TOPIC = "la-image-to-text-results"
+TRANSLATE_TOPIC = "la-image-to-text-translation"
 RESULT_BUCKET = "[YOUR-RESULTS-BUCKET]"
 TRANSLATE = True
 TO_LANG = ["en", "fr", "es", "ar", "ru", "hi"]
