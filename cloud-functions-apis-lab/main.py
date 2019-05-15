@@ -33,7 +33,8 @@ RESULT_TOPIC = "[YOUR-RESULTS-TOPIC]"
 TRANSLATE_TOPIC = "[YOUR-TRANSLATION-TOPIC]"
 RESULT_BUCKET = "[YOUR-RESULTS-BUCKET]"
 TRANSLATE = True
-TO_LANG = ["en", "fr", "es", "de", "ru"]
+TO_LANG = ["en", "fr", "es", "ar", "ru", "hi"]
+
 
 # [START functions_ocr_detect]
 def detect_text(bucket, filename):
@@ -121,7 +122,7 @@ def translate_text(event, context):
     translated_text = translate_client.translate(text,
                                                  target_language=target_lang,
                                                  source_language=src_lang)
-    topic_name = RESULT_TOPIC
+    topic_name = RESULT_TOPIC']
     message = {
         'text': translated_text['translatedText'],
         'filename': filename,
@@ -156,7 +157,8 @@ def save_result(event, context):
     print('Saving result to {} in bucket {}.'.format(result_filename,
                                                      bucket_name))
 
-    blob.upload_from_string(text)
+    theHeader = f"content_type='text/plain'; charset='utf-8'; content_lang='{lang}'"
+    blob.upload_from_string(text, theHeader)
 
     print('File saved.')
 # [END functions_ocr_save]
