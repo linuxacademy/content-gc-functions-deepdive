@@ -4,11 +4,11 @@ import twilio
 
 from twilio.rest import Client
 
-TWILIO_ACCOUNT_SID = "ACea7d7de04bda1a984da211d62bbb657b"
-TWILIO_AUTH_TOKEN = "f0ca5da92e13dad2dcddbab04dc4b50c"
-TWILIO_NUMBER = "18482448802"
+TWILIO_ACCOUNT_SID = "[YOUR_TWILIO_ACCOUNT_SID]"
+TWILIO_AUTH_TOKEN = "[YOUR_TWILIO_AUTH_TOKEN]"
+TWILIO_NUMBER = "[YOUR_TWILIO_NUMBER]"
 TO_NUMBER = ['ARRAY_OF_NUMBERS']
-BUCKET = "la-music-gallery-001"
+BUCKET = "[BUCKET_NAME]"
 
 def send_sms(data,context):
 
