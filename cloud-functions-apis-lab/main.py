@@ -16,25 +16,24 @@ import base64
 import json
 import os
 
-from google.cloud import pubsub
+from google.cloud import pubsub_v1
 from google.cloud import storage
-from google.cloud import translate
+from google.cloud import translate_v2 as translate
 from google.cloud import vision
 
 vision_client = vision.ImageAnnotatorClient()
 translate_client = translate.Client()
-publisher = pubsub.PublisherClient()
+publisher = pubsub_v1.PublisherClient()
 storage_client = storage.Client()
 
-project_id = os.environ['GCP_PROJECT']
+project_id = "[PROJECT_ID]"
 
 # SET VARIABLES
-RESULT_TOPIC = "la-image-to-text-results"
-TRANSLATE_TOPIC = "la-image-to-text-translation"
-RESULT_BUCKET = "[YOUR-RESULTS-BUCKET]"
+RESULT_TOPIC = "acg-image-to-text-results"
+TRANSLATE_TOPIC = "acg-image-to-text-translation"
+RESULT_BUCKET = "[RESULT_BUCKET]"
 TRANSLATE = True
-TO_LANG = ["en", "fr", "es", "ar", "ru", "hi"]
-
+TO_LANG = "en, fr, es, ar, ru, hi"
 
 # [START functions_ocr_detect]
 def detect_text(bucket, filename):
@@ -42,9 +41,10 @@ def detect_text(bucket, filename):
 
     futures = []
 
-    text_detection_response = vision_client.text_detection({
-        'source': {'image_uri': 'gs://{}/{}'.format(bucket, filename)}
-    })
+    image = vision.Image(
+        source=vision.ImageSource(gcs_image_uri=f"gs://{bucket}/{filename}")
+    )
+    text_detection_response = vision_client.text_detection(image=image)
     annotations = text_detection_response.text_annotations
     if len(annotations) > 0:
         text = annotations[0].description
@@ -57,17 +57,18 @@ def detect_text(bucket, filename):
     print('Detected language {} for text {}.'.format(src_lang, text))
 
     # Submit a message to the bus for each target language
-    for target_lang in TO_LANG:
-        topic_name = TRANSLATE_TOPIC
-        if src_lang == target_lang or src_lang == 'und':
-            topic_name = RESULT_TOPIC
+    to_langs = os.environ["TO_LANG"].split(",")
+    for target_lang in to_langs:
+        topic_name = os.environ["TRANSLATE_TOPIC"]
+        if src_lang == target_lang or src_lang == "und":
+            topic_name = os.environ["RESULT_TOPIC"]
         message = {
-            'text': text,
-            'filename': filename,
-            'lang': target_lang,
-            'src_lang': src_lang
+            "text": text,
+            "filename": filename,
+            "lang": target_lang,
+            "src_lang": src_lang,
         }
-        message_data = json.dumps(message).encode('utf-8')
+        message_data = json.dumps(message).encode("utf-8")
         topic_path = publisher.topic_path(project_id, topic_name)
         future = publisher.publish(topic_path, data=message_data)
         futures.append(future)
@@ -80,8 +81,12 @@ def detect_text(bucket, filename):
 def validate_message(message, param):
     var = message.get(param)
     if not var:
-        raise ValueError('{} is not provided. Make sure you have \
-                          property {} in the request'.format(param, param))
+        raise ValueError(
+            "{} is not provided. Make sure you have \
+                          property {} in the request".format(
+                param, param
+            )
+        )
     return var
 # [END message_validatation_helper]
 
