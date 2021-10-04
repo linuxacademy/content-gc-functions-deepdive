@@ -33,7 +33,7 @@ RESULT_TOPIC = "acg-image-to-text-results"
 TRANSLATE_TOPIC = "acg-image-to-text-translation"
 RESULT_BUCKET = "[RESULT_BUCKET]"
 TRANSLATE = True
-TO_LANG = "en, fr, es, ar, ru, hi"
+TO_LANG = "en fr es ar ru hi"
 
 # [START functions_ocr_detect]
 def detect_text(bucket, filename):
@@ -57,11 +57,10 @@ def detect_text(bucket, filename):
     print('Detected language {} for text {}.'.format(src_lang, text))
 
     # Submit a message to the bus for each target language
-    to_langs = os.environ["TO_LANG"].split(",")
-    for target_lang in to_langs:
-        topic_name = os.environ["TRANSLATE_TOPIC"]
+    for target_lang in TO_LANG.split():
+        topic_name = TRANSLATE_TOPIC
         if src_lang == target_lang or src_lang == "und":
-            topic_name = os.environ["RESULT_TOPIC"]
+            topic_name = RESULT_TOPIC
         message = {
             "text": text,
             "filename": filename,
