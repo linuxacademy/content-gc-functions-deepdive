@@ -12,7 +12,7 @@ CONNECTION_NAME = getenv(
   '[YOUR_INSTANCE_CONNECTION_NAME]')
 DB_USER = getenv('MYSQL_USER', 'root')
 DB_PASSWORD = getenv('MYSQL_PASSWORD', 'root')
-DB_NAME = getenv('MYSQL_DATABASE', 'la_met_museum')
+DB_NAME = getenv('MYSQL_DATABASE', 'acg_met_museum')
 
 mysql_config = {
   'user': DB_USER,
